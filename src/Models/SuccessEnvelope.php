@@ -18,7 +18,7 @@ final class SuccessEnvelope implements Model
          */
         public readonly string $platform,
         /**
-         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'
+         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'story'|'highlight'|'subreddit'|'rule'|'wiki'|'trophy'
          */
         public readonly string $resource,
         /**
@@ -40,7 +40,7 @@ final class SuccessEnvelope implements Model
             data: $data['data'] ?? null,
             meta: Wire::nullableObject($data['meta'] ?? null, "{$path}.meta", ResponseMeta::class),
             platform: Wire::enum($data['platform'] ?? null, "{$path}.platform", ['instagram', 'tiktok', 'twitter', 'reddit']),
-            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'subreddit', 'rule', 'wiki', 'trophy']),
+            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'story', 'highlight', 'subreddit', 'rule', 'wiki', 'trophy']),
             source: Wire::enum($data['source'] ?? null, "{$path}.source", ['live', 'cache']),
         );
     }

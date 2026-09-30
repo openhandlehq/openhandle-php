@@ -87,10 +87,8 @@ abstract class GeneratedClient
                 return match (true) {
                     $platform === 'instagram' && $resource === 'profile' => InstagramProfile::fromArray($fields),
                     $platform === 'instagram' && $resource === 'post' => InstagramPost::fromArray($fields),
-                    $platform === 'instagram' && $resource === 'entity' => Wire::variant($fields, [
-                        InstagramStory::class => ['ai', 'attribution', 'caption', 'carousel', 'code', 'collaborators', 'comments', 'crossposting', 'expiresAt', 'extracted', 'fbid', 'hasDelayedMetadata', 'hasTaggedUsers', 'hasVisualReplies', 'highlights', 'invitedCollaborators', 'isEarlyAccess', 'isEdited', 'isFanClubPromo', 'isLastVideoSegment', 'isOpenToPublicSubmission', 'isPaidPartnership', 'isPublicChatWelcomeVideo', 'language', 'likeAndViewCountsHidden', 'location', 'media', 'notes', 'pinning', 'productTags', 'remix', 'reuse', 'shareCountHidden', 'sharingEnabled', 'stickers', 'taggedUsers', 'template', 'text', 'type'],
-                        InstagramHighlight::class => ['cover', 'isArchived', 'isConvertedToReel', 'isInProfileGrid', 'isPinned', 'lastStoryAt', 'stories', 'updatedAt'],
-                    ], [InstagramHighlight::class => '/stories/highlights/'])::fromArray($fields),
+                    $platform === 'instagram' && $resource === 'story' => InstagramStory::fromArray($fields),
+                    $platform === 'instagram' && $resource === 'highlight' => InstagramHighlight::fromArray($fields),
                     $platform === 'tiktok' && $resource === 'profile' => TikTokProfile::fromArray($fields),
                     $platform === 'tiktok' && $resource === 'post' => TikTokPost::fromArray($fields),
                     $platform === 'twitter' && $resource === 'profile' => TwitterProfile::fromArray($fields),

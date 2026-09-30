@@ -209,18 +209,21 @@ final class ClientTest extends TestCase
         self::assertInstanceOf(InstagramProfile::class, $response->data);
     }
 
-    public function testFetchTellsAHighlightFromAStoryEvenWhenEmptyFieldsAreOmitted(): void
+    public function testFetchDecodesInstagramStoriesAndHighlightsByResource(): void
     {
-        $highlight = ['id' => '17900000000000001', 'url' => 'https://www.instagram.com/stories/highlights/17900000000000001/'];
-        $story = ['id' => '3100000000000000001', 'url' => 'https://www.instagram.com/stories/openai/3100000000000000001/', 'code' => 'DSTORY'];
-        $bodies = [$highlight, $story];
-        $api = new MockApi(static function () use (&$bodies): ResponseInterface {
+        $answers = [
+            ['resource' => 'highlight', 'data' => ['id' => '17900000000000001', 'url' => 'https://www.instagram.com/stories/highlights/17900000000000001/']],
+            ['resource' => 'story', 'data' => ['id' => '3100000000000000001', 'url' => 'https://www.instagram.com/stories/openai/3100000000000000001/']],
+        ];
+        $api = new MockApi(static function () use (&$answers): ResponseInterface {
+            $answer = array_shift($answers) ?? [];
+
             return MockApi::envelope([
                 'platform' => 'instagram',
-                'resource' => 'entity',
+                'resource' => $answer['resource'] ?? '',
                 'capturedAt' => '2026-08-26T12:00:00Z',
                 'source' => 'live',
-                'data' => array_shift($bodies),
+                'data' => $answer['data'] ?? [],
             ]);
         });
         $openhandle = $api->client();
@@ -231,7 +234,7 @@ final class ClientTest extends TestCase
         self::assertInstanceOf(InstagramHighlight::class, $first->data);
         self::assertSame('17900000000000001', $first->data->id);
         self::assertInstanceOf(InstagramStory::class, $second->data);
-        self::assertSame('DSTORY', $second->data->code);
+        self::assertSame('3100000000000000001', $second->data->id);
     }
 
     public function testKeepsOmittedMetricsNullInsteadOfZero(): void
