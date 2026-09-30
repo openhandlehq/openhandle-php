@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.5](https://github.com/openhandlehq/openhandle-php/compare/v1.2.4...v1.2.5) (2026-09-30)
+
+
+### Features
+
+* sync API contract ([c1f5df6](https://github.com/openhandlehq/openhandle-php/commit/c1f5df6147a7378ddde038f94632fa66b7ca9a88))
+* sync SDK source ([b462fee](https://github.com/openhandlehq/openhandle-php/commit/b462feeaf9c3f10c48d77e0315e16fc1932faf9d))
+
 ## [1.2.4](https://github.com/openhandlehq/openhandle-php/compare/v0.1.0...v1.2.4) (2026-09-30)
 
 
