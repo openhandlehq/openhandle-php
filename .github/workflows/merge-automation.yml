@@ -10,7 +10,7 @@ permissions:
 jobs:
     merge:
         if: github.event.pull_request.user.login == 'openhandle-sdk-sync[bot]'
-        runs-on: ubuntu-latest
+        runs-on: blacksmith-2vcpu-ubuntu-2404
         timeout-minutes: 15
         steps:
             - name: Create SDK merge token
