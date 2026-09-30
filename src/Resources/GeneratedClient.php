@@ -90,7 +90,7 @@ abstract class GeneratedClient
                     $platform === 'instagram' && $resource === 'entity' => Wire::variant($fields, [
                         InstagramStory::class => ['ai', 'attribution', 'caption', 'carousel', 'code', 'collaborators', 'comments', 'crossposting', 'expiresAt', 'extracted', 'fbid', 'hasDelayedMetadata', 'hasTaggedUsers', 'hasVisualReplies', 'highlights', 'invitedCollaborators', 'isEarlyAccess', 'isEdited', 'isFanClubPromo', 'isLastVideoSegment', 'isOpenToPublicSubmission', 'isPaidPartnership', 'isPublicChatWelcomeVideo', 'language', 'likeAndViewCountsHidden', 'location', 'media', 'notes', 'pinning', 'productTags', 'remix', 'reuse', 'shareCountHidden', 'sharingEnabled', 'stickers', 'taggedUsers', 'template', 'text', 'type'],
                         InstagramHighlight::class => ['cover', 'isArchived', 'isConvertedToReel', 'isInProfileGrid', 'isPinned', 'lastStoryAt', 'stories', 'updatedAt'],
-                    ])::fromArray($fields),
+                    ], [InstagramHighlight::class => '/stories/highlights/'])::fromArray($fields),
                     $platform === 'tiktok' && $resource === 'profile' => TikTokProfile::fromArray($fields),
                     $platform === 'tiktok' && $resource === 'post' => TikTokPost::fromArray($fields),
                     $platform === 'twitter' && $resource === 'profile' => TwitterProfile::fromArray($fields),

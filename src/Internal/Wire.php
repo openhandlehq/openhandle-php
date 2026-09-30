@@ -213,18 +213,26 @@ final class Wire
     }
 
     /**
-     * Pick the model whose distinguishing fields are most present in an
-     * object. Omitted zero values make a single missing field inconclusive.
+     * Pick the model for an object that several models share. A URL marker
+     * decides first, because the API omits empty fields. Otherwise the model
+     * whose distinguishing fields are most present wins.
      *
      * @template T of Model
      *
      * @param array<string, mixed> $fields
      * @param non-empty-array<class-string<T>, list<string>> $candidates
+     * @param array<class-string<T>, string> $urlMarkers
      *
      * @return class-string<T>
      */
-    public static function variant(array $fields, array $candidates): string
+    public static function variant(array $fields, array $candidates, array $urlMarkers = []): string
     {
+        $url = $fields['url'] ?? null;
+        foreach ($urlMarkers as $class => $marker) {
+            if (is_string($url) && str_contains($url, $marker)) {
+                return $class;
+            }
+        }
         $best = array_key_first($candidates);
         $bestScore = -1;
         foreach ($candidates as $class => $keys) {
