@@ -209,10 +209,10 @@ final class ClientTest extends TestCase
         self::assertInstanceOf(InstagramProfile::class, $response->data);
     }
 
-    public function testFetchTellsAHighlightFromAStoryByItsFields(): void
+    public function testFetchTellsAHighlightFromAStoryEvenWhenEmptyFieldsAreOmitted(): void
     {
-        $highlight = ['id' => '17900000000000001', 'title' => 'Launch', 'stories' => [], 'cover' => null, 'isPinned' => false];
-        $story = ['id' => '3100000000000000001', 'code' => 'DSTORY', 'fbid' => null, 'expiresAt' => '2026-08-27T12:00:00Z'];
+        $highlight = ['id' => '17900000000000001', 'url' => 'https://www.instagram.com/stories/highlights/17900000000000001/'];
+        $story = ['id' => '3100000000000000001', 'url' => 'https://www.instagram.com/stories/openai/3100000000000000001/', 'code' => 'DSTORY'];
         $bodies = [$highlight, $story];
         $api = new MockApi(static function () use (&$bodies): ResponseInterface {
             return MockApi::envelope([
@@ -229,7 +229,7 @@ final class ClientTest extends TestCase
         $second = $openhandle->fetch('https://www.instagram.com/stories/openai/3100000000000000001/');
 
         self::assertInstanceOf(InstagramHighlight::class, $first->data);
-        self::assertSame('Launch', $first->data->title);
+        self::assertSame('17900000000000001', $first->data->id);
         self::assertInstanceOf(InstagramStory::class, $second->data);
         self::assertSame('DSTORY', $second->data->code);
     }
