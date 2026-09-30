@@ -1,0 +1,65 @@
+{
+    "name": "openhandle/sdk",
+    "description": "Official PHP SDK for OpenHandle",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "openhandle",
+        "social-media",
+        "api",
+        "sdk"
+    ],
+    "homepage": "https://openhandle.dev",
+    "authors": [
+        {
+            "name": "OpenHandle",
+            "email": "support@openhandle.dev"
+        }
+    ],
+    "support": {
+        "docs": "https://openhandle.dev/docs/sdks",
+        "issues": "https://github.com/openhandlehq/openhandle-php/issues",
+        "source": "https://github.com/openhandlehq/openhandle-php"
+    },
+    "require": {
+        "php": "^8.2",
+        "ext-json": "*",
+        "composer-runtime-api": "^2.2",
+        "guzzlehttp/guzzle": "^7.9"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^11.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenHandle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OpenHandle\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "generate": "@php scripts/generate.php",
+        "lint": [
+            "@php scripts/generate.php --check",
+            "php-cs-fixer check --diff",
+            "phpstan analyse --no-progress --memory-limit=1G"
+        ],
+        "test": [
+            "phpunit",
+            "@php scripts/score-agent-eval.php evals/reference"
+        ]
+    },
+    "config": {
+        "platform": {
+            "php": "8.2.0"
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

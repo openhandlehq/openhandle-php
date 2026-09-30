@@ -1,0 +1,26 @@
+name: Publish
+
+on:
+    push:
+        tags: ['v*']
+
+permissions:
+    contents: read
+
+jobs:
+    packagist:
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        steps:
+            - name: Tell Packagist about the new tag
+              env:
+                  PACKAGIST_USERNAME: ${{ secrets.PACKAGIST_USERNAME }}
+                  PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+              run: |
+                  test -n "$PACKAGIST_USERNAME"
+                  test -n "$PACKAGIST_TOKEN"
+                  curl --fail-with-body --silent --show-error \
+                      --request POST \
+                      --header 'Content-Type: application/json' \
+                      --data '{"repository":{"url":"https://packagist.org/packages/openhandle/sdk"}}' \
+                      "https://packagist.org/api/update-package?username=${PACKAGIST_USERNAME}&apiToken=${PACKAGIST_TOKEN}"
