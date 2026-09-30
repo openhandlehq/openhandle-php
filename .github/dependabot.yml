@@ -6,6 +6,9 @@ updates:
           interval: weekly
       commit-message:
           prefix: 'chore(deps)'
+      ignore:
+          - dependency-name: guzzlehttp/guzzle
+            update-types: ['version-update:semver-major']
       groups:
           composer-dependencies:
               patterns: ['*']
