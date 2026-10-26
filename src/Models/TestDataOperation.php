@@ -29,12 +29,12 @@ final class TestDataOperation implements Model
         public readonly bool $paginated,
         public readonly string $path,
         /**
-         * @var 'instagram'|'tiktok'|'twitter'|'reddit'
+         * @var 'instagram'|'tiktok'|'twitter'|'reddit'|'youtube'
          */
         public readonly string $platform,
         public readonly string $publicSchema,
         /**
-         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'
+         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'
          */
         public readonly string $resource,
         public readonly string $summary,
@@ -55,9 +55,9 @@ final class TestDataOperation implements Model
             method: Wire::enum($data['method'] ?? null, "{$path}.method", ['GET']),
             paginated: Wire::bool($data['paginated'] ?? false, "{$path}.paginated"),
             path: Wire::string($data['path'] ?? '', "{$path}.path"),
-            platform: Wire::enum($data['platform'] ?? null, "{$path}.platform", ['instagram', 'tiktok', 'twitter', 'reddit']),
+            platform: Wire::enum($data['platform'] ?? null, "{$path}.platform", ['instagram', 'tiktok', 'twitter', 'reddit', 'youtube']),
             publicSchema: Wire::string($data['publicSchema'] ?? '', "{$path}.publicSchema"),
-            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'subreddit', 'rule', 'wiki', 'trophy']),
+            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'subreddit', 'rule', 'wiki', 'trophy', 'playlist', 'transcript', 'product', 'chart']),
             summary: Wire::string($data['summary'] ?? '', "{$path}.summary"),
             toolName: Wire::string($data['toolName'] ?? '', "{$path}.toolName"),
         );

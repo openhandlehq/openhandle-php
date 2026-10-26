@@ -28,8 +28,9 @@ final class TikTokProfileLikedPostsResource
     /**
      * List profile liked posts
      *
-     * Return a cursor-paginated Tiktok profile collection. Test and Live use the same route, parameters,
-     * response schema, pagination, and errors. In Test, null means unavailable, not zero.
+     * Return a cursor-paginated collection of a public Tiktok profile's liked posts. Test and Live use the
+     * same route, parameters, response schema, pagination, and errors. In Test, null means unavailable,
+     * not zero.
      *
      * Example:
      *     $openhandle->tiktok->profile('@pixel_orchard_tt_test')->likedPosts->list(freshness: '24h');

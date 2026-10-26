@@ -28,8 +28,9 @@ final class TwitterProfileMediaResource
     /**
      * List profile media
      *
-     * Return a cursor-paginated Twitter profile collection. Test and Live use the same route, parameters,
-     * response schema, pagination, and errors. In Test, null means unavailable, not zero.
+     * Return a cursor-paginated collection of a public Twitter profile's media. Test and Live use the same
+     * route, parameters, response schema, pagination, and errors. In Test, null means unavailable, not
+     * zero.
      *
      * Example:
      *     $openhandle->twitter->profile('@copperfield_lab_x_test')->media->list(freshness: '24h');
