@@ -20,13 +20,18 @@ final class References
     private const TWITTER_NAME = '/^[A-Za-z0-9_]{1,15}\z/';
     private const REDDIT_NAME = '/^[A-Za-z0-9_-]{1,100}\z/';
     private const REDDIT_POST_ID = '/^[a-z0-9]+\z/';
+    private const YOUTUBE_HANDLE = '/^[\p{L}\p{N}._-]{1,100}\z/u';
+    private const YOUTUBE_POST_ID = '/^[A-Za-z0-9_-]{11}\z/';
+    private const YOUTUBE_PROFILE_ID = '/^UC[A-Za-z0-9_-]{22}\z/';
     private const SHORTCODE = '/^[A-Za-z0-9_-]+\z/';
 
+    private const YOUTUBE_HOSTS = ['youtube.com', 'm.youtube.com', 'music.youtube.com', 'youtu.be'];
     private const REDDIT_HOSTS = ['reddit.com', 'old.reddit.com', 'new.reddit.com', 'm.reddit.com', 'redd.it'];
     private const TIKTOK_HOSTS = ['tiktok.com', 'm.tiktok.com'];
     private const TIKTOK_SHORT_HOSTS = ['vm.tiktok.com', 'vt.tiktok.com'];
     private const TWITTER_HOSTS = ['x.com', 'twitter.com', 'mobile.twitter.com'];
     private const SUPPORTED_HOSTS = [
+        ...self::YOUTUBE_HOSTS,
         ...self::REDDIT_HOSTS,
         'instagram.com',
         ...self::TIKTOK_HOSTS,
@@ -132,6 +137,7 @@ final class References
     {
         $username = str_starts_with($reference, '@') ? substr($reference, 1) : $reference;
         $pattern = match ($platform) {
+            'youtube' => self::YOUTUBE_HANDLE,
             'reddit' => self::REDDIT_NAME,
             'instagram' => self::INSTAGRAM_NAME,
             'tiktok' => self::TIKTOK_NAME,
@@ -165,6 +171,9 @@ final class References
             static fn(string $part): bool => $part !== '',
         ));
 
+        if (in_array($host, self::YOUTUBE_HOSTS, true)) {
+            return self::youtubeUrl($host, $parsed['query'] ?? '', $parts);
+        }
         if (in_array($host, self::REDDIT_HOSTS, true)) {
             return self::redditUrl($host, $parts);
         }
@@ -291,6 +300,36 @@ final class References
         }
 
         throw new OpenHandleReferenceError('Unsupported Reddit URL.');
+    }
+
+    /**
+     * @param list<string> $parts
+     *
+     * @return array{string, string, string}
+     */
+    private static function youtubeUrl(string $host, string $query, array $parts): array
+    {
+        $count = count($parts);
+        if ($host === 'youtu.be' && $count === 1 && self::matches(self::YOUTUBE_POST_ID, $parts[0])) {
+            return ['youtube', 'post', $parts[0]];
+        }
+        parse_str($query, $parameters);
+        $video = is_string($parameters['v'] ?? null) ? $parameters['v'] : '';
+        if ($count === 1 && $parts[0] === 'watch' && self::matches(self::YOUTUBE_POST_ID, $video)) {
+            return ['youtube', 'post', $video];
+        }
+        if ($count === 2 && in_array($parts[0], ['shorts', 'live', 'embed'], true) && self::matches(self::YOUTUBE_POST_ID, $parts[1])) {
+            return ['youtube', 'post', $parts[1]];
+        }
+        $handle = rawurldecode($parts[0] ?? '');
+        if (str_starts_with($handle, '@') && self::matches(self::YOUTUBE_HANDLE, substr($handle, 1))) {
+            return ['youtube', 'profile', $handle];
+        }
+        if ($count >= 2 && $parts[0] === 'channel' && self::matches(self::YOUTUBE_PROFILE_ID, $parts[1])) {
+            return ['youtube', 'profile', $parts[1]];
+        }
+
+        throw new OpenHandleReferenceError('Unsupported YouTube URL.');
     }
 
     private static function matches(string $pattern, string $value): bool

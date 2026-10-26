@@ -26,7 +26,7 @@ final class TestDataEntry implements Model
          */
         public readonly array $operationIds,
         /**
-         * @var 'instagram'|'tiktok'|'twitter'|'reddit'
+         * @var 'instagram'|'tiktok'|'twitter'|'reddit'|'youtube'
          */
         public readonly string $platform,
         /**
@@ -34,7 +34,7 @@ final class TestDataEntry implements Model
          */
         public readonly array $relationships,
         /**
-         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'
+         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'
          */
         public readonly string $resource,
         /**
@@ -61,9 +61,9 @@ final class TestDataEntry implements Model
             inputs: Wire::mapOf($data['inputs'] ?? [], "{$path}.inputs", static fn(mixed $item, string $path): string => Wire::string($item, $path)),
             label: Wire::string($data['label'] ?? '', "{$path}.label"),
             operationIds: Wire::list($data['operationIds'] ?? [], "{$path}.operationIds", static fn(mixed $item, string $path): string => Wire::string($item, $path)),
-            platform: Wire::enum($data['platform'] ?? null, "{$path}.platform", ['instagram', 'tiktok', 'twitter', 'reddit']),
+            platform: Wire::enum($data['platform'] ?? null, "{$path}.platform", ['instagram', 'tiktok', 'twitter', 'reddit', 'youtube']),
             relationships: Wire::list($data['relationships'] ?? [], "{$path}.relationships", static fn(mixed $item, string $path): TestDataRelationship => Wire::object($item, $path, TestDataRelationship::class)),
-            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'subreddit', 'rule', 'wiki', 'trophy']),
+            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'subreddit', 'rule', 'wiki', 'trophy', 'playlist', 'transcript', 'product', 'chart']),
             synthetic: Wire::enum($data['synthetic'] ?? null, "{$path}.synthetic", [true]),
             traits: Wire::list($data['traits'] ?? [], "{$path}.traits", static fn(mixed $item, string $path): string => Wire::string($item, $path)),
         );

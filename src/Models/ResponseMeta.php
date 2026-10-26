@@ -17,13 +17,18 @@ final class ResponseMeta implements Model
          * @var list<mixed>|null
          */
         public readonly ?array $cashtags = null,
+        public readonly ?string $category = null,
         public readonly ?TikTokChartMetadata $chart = null,
+        public readonly ?YouTubeChartWeek $chartWeek = null,
         public readonly ?InstagramStoryCollection $collection = null,
+        public readonly ?int $comments = null,
         public readonly ?RedditCommunityHandle $community = null,
         public readonly ?RedditListingContext $context = null,
         public readonly ?TikTokPageContinuation $continuation = null,
         public readonly ?int $count = null,
+        public readonly ?string $country = null,
         public readonly ?string $domain = null,
+        public readonly ?int $estimatedResults = null,
         /**
          * @var list<mixed>|null
          */
@@ -33,6 +38,7 @@ final class ResponseMeta implements Model
         public readonly ?bool $hasMore = null,
         public readonly ?bool $hasMoreAfter = null,
         public readonly ?bool $hasMoreBefore = null,
+        public readonly ?YouTubeHashtag $hashtag = null,
         /**
          * @var list<mixed>|null
          */
@@ -48,6 +54,7 @@ final class ResponseMeta implements Model
         public readonly ?string $nextCursorLabel = null,
         public readonly ?string $nextCursorType = null,
         public readonly ?InstagramCommentReference $parent = null,
+        public readonly ?YouTubePlaylistReference $playlist = null,
         public readonly ?string $previousCursor = null,
         /**
          * @var list<TwitterPostReference>|null
@@ -75,20 +82,26 @@ final class ResponseMeta implements Model
     {
         return new self(
             cashtags: Wire::nullableList($data['cashtags'] ?? null, "{$path}.cashtags", static fn(mixed $item): mixed => $item),
+            category: Wire::nullableString($data['category'] ?? null, "{$path}.category"),
             chart: Wire::nullableObject($data['chart'] ?? null, "{$path}.chart", TikTokChartMetadata::class),
+            chartWeek: Wire::nullableObject($data['chartWeek'] ?? null, "{$path}.chartWeek", YouTubeChartWeek::class),
             collection: Wire::nullableObject($data['collection'] ?? null, "{$path}.collection", InstagramStoryCollection::class),
+            comments: Wire::nullableInt($data['comments'] ?? null, "{$path}.comments"),
             community: Wire::nullableObject($data['community'] ?? null, "{$path}.community", RedditCommunityHandle::class),
             context: Wire::nullableObject($data['context'] ?? null, "{$path}.context", RedditListingContext::class),
             continuation: Wire::nullableObject($data['continuation'] ?? null, "{$path}.continuation", TikTokPageContinuation::class),
             count: Wire::nullableInt($data['count'] ?? null, "{$path}.count"),
+            country: Wire::nullableString($data['country'] ?? null, "{$path}.country"),
             cursors: Wire::object($data['cursors'] ?? [], "{$path}.cursors", ResponseCursors::class),
             domain: Wire::nullableString($data['domain'] ?? null, "{$path}.domain"),
+            estimatedResults: Wire::nullableInt($data['estimatedResults'] ?? null, "{$path}.estimatedResults"),
             events: Wire::nullableList($data['events'] ?? null, "{$path}.events", static fn(mixed $item): mixed => $item),
             handle: Wire::nullableString($data['handle'] ?? null, "{$path}.handle"),
             hasFilteredComments: Wire::nullableBool($data['hasFilteredComments'] ?? null, "{$path}.hasFilteredComments"),
             hasMore: Wire::nullableBool($data['hasMore'] ?? null, "{$path}.hasMore"),
             hasMoreAfter: Wire::nullableBool($data['hasMoreAfter'] ?? null, "{$path}.hasMoreAfter"),
             hasMoreBefore: Wire::nullableBool($data['hasMoreBefore'] ?? null, "{$path}.hasMoreBefore"),
+            hashtag: Wire::nullableObject($data['hashtag'] ?? null, "{$path}.hashtag", YouTubeHashtag::class),
             hashtags: Wire::nullableList($data['hashtags'] ?? null, "{$path}.hashtags", static fn(mixed $item): mixed => $item),
             isLimited: Wire::nullableBool($data['isLimited'] ?? null, "{$path}.isLimited"),
             likesEnabled: Wire::nullableBool($data['likesEnabled'] ?? null, "{$path}.likesEnabled"),
@@ -98,6 +111,7 @@ final class ResponseMeta implements Model
             nextCursorLabel: Wire::nullableString($data['nextCursorLabel'] ?? null, "{$path}.nextCursorLabel"),
             nextCursorType: Wire::nullableString($data['nextCursorType'] ?? null, "{$path}.nextCursorType"),
             parent: Wire::nullableObject($data['parent'] ?? null, "{$path}.parent", InstagramCommentReference::class),
+            playlist: Wire::nullableObject($data['playlist'] ?? null, "{$path}.playlist", YouTubePlaylistReference::class),
             previousCursor: Wire::nullableString($data['previousCursor'] ?? null, "{$path}.previousCursor"),
             promoted: Wire::nullableList($data['promoted'] ?? null, "{$path}.promoted", static fn(mixed $item, string $path): TwitterPostReference => Wire::object($item, $path, TwitterPostReference::class)),
             queries: Wire::nullableList($data['queries'] ?? null, "{$path}.queries", static fn(mixed $item, string $path): TwitterSuggestedQuery => Wire::object($item, $path, TwitterSuggestedQuery::class)),

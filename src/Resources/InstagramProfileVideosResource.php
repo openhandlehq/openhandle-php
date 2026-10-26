@@ -28,8 +28,9 @@ final class InstagramProfileVideosResource
     /**
      * List profile videos
      *
-     * Return a cursor-paginated Instagram profile collection. Test and Live use the same route,
-     * parameters, response schema, pagination, and errors. In Test, null means unavailable, not zero.
+     * Return a cursor-paginated collection of a public Instagram profile's videos. Test and Live use the
+     * same route, parameters, response schema, pagination, and errors. In Test, null means unavailable,
+     * not zero.
      *
      * Example:
      *     $openhandle->instagram->profile('@northstar_forge_test')->videos->list(freshness: '24h');

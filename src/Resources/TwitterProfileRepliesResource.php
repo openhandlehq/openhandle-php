@@ -28,8 +28,9 @@ final class TwitterProfileRepliesResource
     /**
      * List profile replies
      *
-     * Return a cursor-paginated Twitter profile collection. Test and Live use the same route, parameters,
-     * response schema, pagination, and errors. In Test, null means unavailable, not zero.
+     * Return a cursor-paginated collection of a public Twitter profile's replies. Test and Live use the
+     * same route, parameters, response schema, pagination, and errors. In Test, null means unavailable,
+     * not zero.
      *
      * Example:
      *     $openhandle->twitter->profile('@copperfield_lab_x_test')->replies->list(freshness: '24h');

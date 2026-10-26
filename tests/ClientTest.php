@@ -10,6 +10,8 @@ use OpenHandle\Internal\Operations;
 use OpenHandle\Models\InstagramHighlight;
 use OpenHandle\Models\InstagramProfile;
 use OpenHandle\Models\InstagramStory;
+use OpenHandle\Models\YouTubePost;
+use OpenHandle\Models\YouTubeProfile;
 use OpenHandle\OpenHandle;
 use OpenHandle\OpenHandleError;
 use OpenHandle\OpenHandleReferenceError;
@@ -235,6 +237,61 @@ final class ClientTest extends TestCase
         self::assertSame('17900000000000001', $first->data->id);
         self::assertInstanceOf(InstagramStory::class, $second->data);
         self::assertSame('3100000000000000001', $second->data->id);
+    }
+
+    public function testFetchDecodesYouTubeProfilesAndPostsByResource(): void
+    {
+        $answers = [
+            ['resource' => 'profile', 'data' => ['id' => 'UCX6OQ3DkcsbYNE6H8uQQuVA', 'handle' => 'MrBeast', 'url' => 'https://www.youtube.com/@MrBeast']],
+            ['resource' => 'post', 'data' => ['id' => 'dQw4w9WgXcQ', 'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ']],
+        ];
+        $api = new MockApi(static function () use (&$answers): ResponseInterface {
+            $answer = array_shift($answers) ?? [];
+
+            return MockApi::envelope([
+                'platform' => 'youtube',
+                'resource' => $answer['resource'] ?? '',
+                'capturedAt' => '2026-08-26T12:00:00Z',
+                'source' => 'live',
+                'data' => $answer['data'] ?? [],
+            ]);
+        });
+        $openhandle = $api->client();
+
+        $profile = $openhandle->fetch('https://www.youtube.com/@MrBeast');
+        $post = $openhandle->fetch('https://youtu.be/dQw4w9WgXcQ');
+
+        self::assertInstanceOf(YouTubeProfile::class, $profile->data);
+        self::assertSame('UCX6OQ3DkcsbYNE6H8uQQuVA', $profile->data->id);
+        self::assertInstanceOf(YouTubePost::class, $post->data);
+        self::assertSame('dQw4w9WgXcQ', $post->data->id);
+    }
+
+    public function testYouTubeSelectorsResolveUrlsAndBindNestedCommentReplies(): void
+    {
+        $api = new MockApi(static fn(): ResponseInterface => MockApi::page(null));
+        $openhandle = $api->client();
+
+        $openhandle->youtube->profile('https://www.youtube.com/@MrBeast/videos')->videos->list();
+        $openhandle->youtube->post('https://youtu.be/dQw4w9WgXcQ')->comment('UgzComment.123')->replies->list(token: 'replies-token');
+
+        self::assertSame('/v1/youtube/profiles/%40MrBeast/videos', $api->requests[0]->getUri()->getPath());
+        self::assertSame('/v1/youtube/posts/dQw4w9WgXcQ/comments/UgzComment.123/replies', $api->requests[1]->getUri()->getPath());
+        self::assertSame('replies-token', $api->query(1)['token']);
+    }
+
+    public function testYouTubeProfileSelectorRejectsAVideoUrlBeforeMakingARequest(): void
+    {
+        $api = new MockApi(static fn(): ResponseInterface => MockApi::profile());
+
+        try {
+            $api->client()->youtube->profile(url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+            self::fail('Expected a reference mismatch.');
+        } catch (ReferenceMismatchError $error) {
+            self::assertSame('youtube', $error->actualPlatform);
+            self::assertSame('post', $error->actualResource);
+        }
+        self::assertSame([], $api->requests);
     }
 
     public function testKeepsOmittedMetricsNullInsteadOfZero(): void

@@ -28,8 +28,9 @@ final class InstagramProfileRepostsResource
     /**
      * List profile reposts
      *
-     * Return a cursor-paginated Instagram profile collection. Test and Live use the same route,
-     * parameters, response schema, pagination, and errors. In Test, null means unavailable, not zero.
+     * Return a cursor-paginated collection of a public Instagram profile's reposts. Test and Live use the
+     * same route, parameters, response schema, pagination, and errors. In Test, null means unavailable,
+     * not zero.
      *
      * Example:
      *     $openhandle->instagram->profile('@northstar_forge_test')->reposts->list(freshness: '24h');

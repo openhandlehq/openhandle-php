@@ -19,6 +19,8 @@ use OpenHandle\Models\TikTokPost;
 use OpenHandle\Models\TikTokProfile;
 use OpenHandle\Models\TwitterPost;
 use OpenHandle\Models\TwitterProfile;
+use OpenHandle\Models\YouTubePost;
+use OpenHandle\Models\YouTubeProfile;
 use OpenHandle\Response;
 
 /**
@@ -36,6 +38,8 @@ abstract class GeneratedClient
 
     public readonly TwitterResource $twitter;
 
+    public readonly YouTubeResource $youtube;
+
     public function __construct(private readonly Transport $transport)
     {
         $this->instagram = new InstagramResource($transport, []);
@@ -43,6 +47,7 @@ abstract class GeneratedClient
         $this->testData = new TestDataResource($transport, []);
         $this->tiktok = new TikTokResource($transport, []);
         $this->twitter = new TwitterResource($transport, []);
+        $this->youtube = new YouTubeResource($transport, []);
     }
 
     /**
@@ -59,7 +64,7 @@ abstract class GeneratedClient
      * @param float|null $timeout Request timeout in seconds for this call.
      * @param int|null $maxRetries Retry limit for this call.
      *
-     * @return Response<InstagramProfile|InstagramPost|InstagramStory|InstagramHighlight|TikTokProfile|TikTokPost|TwitterProfile|TwitterPost|RedditProfile|RedditPost|RedditSubreddit>
+     * @return Response<InstagramProfile|InstagramPost|InstagramStory|InstagramHighlight|TikTokProfile|TikTokPost|TwitterProfile|TwitterPost|RedditProfile|RedditPost|RedditSubreddit|YouTubeProfile|YouTubePost>
      */
     public function fetch(string $url, ?string $freshness = null, ?float $timeout = null, ?int $maxRetries = null): Response
     {
@@ -79,7 +84,7 @@ abstract class GeneratedClient
             $body,
             $timeout,
             $maxRetries,
-            static function (mixed $data, array $envelope): InstagramProfile|InstagramPost|InstagramStory|InstagramHighlight|TikTokProfile|TikTokPost|TwitterProfile|TwitterPost|RedditProfile|RedditPost|RedditSubreddit {
+            static function (mixed $data, array $envelope): InstagramProfile|InstagramPost|InstagramStory|InstagramHighlight|TikTokProfile|TikTokPost|TwitterProfile|TwitterPost|RedditProfile|RedditPost|RedditSubreddit|YouTubeProfile|YouTubePost {
                 $platform = Wire::string($envelope['platform'] ?? null, 'platform');
                 $resource = Wire::string($envelope['resource'] ?? null, 'resource');
                 $fields = Wire::map($data, 'data');
@@ -96,6 +101,8 @@ abstract class GeneratedClient
                     $platform === 'reddit' && $resource === 'profile' => RedditProfile::fromArray($fields),
                     $platform === 'reddit' && $resource === 'post' => RedditPost::fromArray($fields),
                     $platform === 'reddit' && $resource === 'subreddit' => RedditSubreddit::fromArray($fields),
+                    $platform === 'youtube' && $resource === 'profile' => YouTubeProfile::fromArray($fields),
+                    $platform === 'youtube' && $resource === 'post' => YouTubePost::fromArray($fields),
                     default => throw Wire::invalid('data', "a supported fetch resource, not {$platform} {$resource}"),
                 };
             },

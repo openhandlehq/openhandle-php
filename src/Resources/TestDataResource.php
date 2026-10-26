@@ -51,8 +51,8 @@ final class TestDataResource
      * Example:
      *     $openhandle->testData->list();
      *
-     * @param 'instagram'|'tiktok'|'twitter'|'reddit'|null $platform Provider-specific public-data filter for this operation.
-     * @param 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|null $resource Provider-specific public-data filter for this operation.
+     * @param 'instagram'|'tiktok'|'twitter'|'reddit'|'youtube'|null $platform Provider-specific public-data filter for this operation.
+     * @param 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'|null $resource Provider-specific public-data filter for this operation.
      * @param string|null $operation Provider-specific public-data filter for this operation.
      * @param string|null $traits Provider-specific public-data filter for this operation.
      * @param int|null $status Provider-specific public-data filter for this operation.
