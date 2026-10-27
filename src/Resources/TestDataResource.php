@@ -52,7 +52,7 @@ final class TestDataResource
      *     $openhandle->testData->list();
      *
      * @param 'instagram'|'tiktok'|'twitter'|'reddit'|'youtube'|null $platform Provider-specific public-data filter for this operation.
-     * @param 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'|'files'|null $resource Provider-specific public-data filter for this operation.
+     * @param 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'|'files'|'storyboard'|'frame'|null $resource Provider-specific public-data filter for this operation.
      * @param string|null $operation Provider-specific public-data filter for this operation.
      * @param string|null $traits Provider-specific public-data filter for this operation.
      * @param int|null $status Provider-specific public-data filter for this operation.
