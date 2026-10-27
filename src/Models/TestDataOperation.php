@@ -34,7 +34,7 @@ final class TestDataOperation implements Model
         public readonly string $platform,
         public readonly string $publicSchema,
         /**
-         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'
+         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'|'files'
          */
         public readonly string $resource,
         public readonly string $summary,
@@ -57,7 +57,7 @@ final class TestDataOperation implements Model
             path: Wire::string($data['path'] ?? '', "{$path}.path"),
             platform: Wire::enum($data['platform'] ?? null, "{$path}.platform", ['instagram', 'tiktok', 'twitter', 'reddit', 'youtube']),
             publicSchema: Wire::string($data['publicSchema'] ?? '', "{$path}.publicSchema"),
-            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'subreddit', 'rule', 'wiki', 'trophy', 'playlist', 'transcript', 'product', 'chart']),
+            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'subreddit', 'rule', 'wiki', 'trophy', 'playlist', 'transcript', 'product', 'chart', 'files']),
             summary: Wire::string($data['summary'] ?? '', "{$path}.summary"),
             toolName: Wire::string($data['toolName'] ?? '', "{$path}.toolName"),
         );

@@ -34,7 +34,7 @@ final class TestDataEntry implements Model
          */
         public readonly array $relationships,
         /**
-         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'
+         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'|'files'
          */
         public readonly string $resource,
         /**
@@ -63,7 +63,7 @@ final class TestDataEntry implements Model
             operationIds: Wire::list($data['operationIds'] ?? [], "{$path}.operationIds", static fn(mixed $item, string $path): string => Wire::string($item, $path)),
             platform: Wire::enum($data['platform'] ?? null, "{$path}.platform", ['instagram', 'tiktok', 'twitter', 'reddit', 'youtube']),
             relationships: Wire::list($data['relationships'] ?? [], "{$path}.relationships", static fn(mixed $item, string $path): TestDataRelationship => Wire::object($item, $path, TestDataRelationship::class)),
-            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'subreddit', 'rule', 'wiki', 'trophy', 'playlist', 'transcript', 'product', 'chart']),
+            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'subreddit', 'rule', 'wiki', 'trophy', 'playlist', 'transcript', 'product', 'chart', 'files']),
             synthetic: Wire::enum($data['synthetic'] ?? null, "{$path}.synthetic", [true]),
             traits: Wire::list($data['traits'] ?? [], "{$path}.traits", static fn(mixed $item, string $path): string => Wire::string($item, $path)),
         );
