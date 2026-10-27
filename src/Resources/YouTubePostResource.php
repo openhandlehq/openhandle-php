@@ -16,6 +16,8 @@ final class YouTubePostResource
 {
     public readonly YouTubePostCommentsResource $comments;
 
+    public readonly YouTubePostFilesResource $files;
+
     public readonly YouTubePostRelatedResource $related;
 
     public readonly YouTubePostSoundPostsResource $soundPosts;
@@ -32,6 +34,7 @@ final class YouTubePostResource
         private readonly array $bindings,
     ) {
         $this->comments = new YouTubePostCommentsResource($transport, $bindings);
+        $this->files = new YouTubePostFilesResource($transport, $bindings);
         $this->related = new YouTubePostRelatedResource($transport, $bindings);
         $this->soundPosts = new YouTubePostSoundPostsResource($transport, $bindings);
         $this->transcript = new YouTubePostTranscriptResource($transport, $bindings);

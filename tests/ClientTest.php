@@ -10,6 +10,7 @@ use OpenHandle\Internal\Operations;
 use OpenHandle\Models\InstagramHighlight;
 use OpenHandle\Models\InstagramProfile;
 use OpenHandle\Models\InstagramStory;
+use OpenHandle\Models\YouTubeFiles;
 use OpenHandle\Models\YouTubePost;
 use OpenHandle\Models\YouTubeProfile;
 use OpenHandle\OpenHandle;
@@ -278,6 +279,32 @@ final class ClientTest extends TestCase
         self::assertSame('/v1/youtube/profiles/%40MrBeast/videos', $api->requests[0]->getUri()->getPath());
         self::assertSame('/v1/youtube/posts/dQw4w9WgXcQ/comments/UgzComment.123/replies', $api->requests[1]->getUri()->getPath());
         self::assertSame('replies-token', $api->query(1)['token']);
+    }
+
+    public function testYouTubePostFilesDecodeEveryStream(): void
+    {
+        $api = new MockApi(static fn(): ResponseInterface => MockApi::envelope([
+            'platform' => 'youtube',
+            'resource' => 'files',
+            'capturedAt' => '2026-10-27T08:00:00Z',
+            'source' => 'live',
+            'data' => [
+                'postId' => 'dQw4w9WgXcQ',
+                'author' => null,
+                'duration' => 213,
+                'renditions' => [[
+                    'itag' => 140, 'quality' => 'audio', 'mimeType' => 'audio/mp4', 'hasVideo' => false,
+                    'hasAudio' => true, 'size' => 3449447, 'url' => 'https://media.openhandle.dev/b',
+                ]],
+            ],
+        ]));
+
+        $files = $api->client()->youtube->post('https://www.youtube.com/shorts/dQw4w9WgXcQ')->files->get()->data;
+
+        self::assertSame('/v1/youtube/posts/dQw4w9WgXcQ/files', $api->requests[0]->getUri()->getPath());
+        self::assertInstanceOf(YouTubeFiles::class, $files);
+        self::assertSame(140, $files->renditions[0]->itag);
+        self::assertSame(3449447, $files->renditions[0]->size);
     }
 
     public function testYouTubeProfileSelectorRejectsAVideoUrlBeforeMakingARequest(): void
