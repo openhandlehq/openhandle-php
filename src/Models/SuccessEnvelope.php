@@ -18,7 +18,7 @@ final class SuccessEnvelope implements Model
          */
         public readonly string $platform,
         /**
-         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'story'|'highlight'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'|'files'
+         * @var 'profile'|'post'|'comment'|'hashtag'|'location'|'music'|'category'|'list'|'entity'|'story'|'highlight'|'subreddit'|'rule'|'wiki'|'trophy'|'playlist'|'transcript'|'product'|'chart'|'files'|'storyboard'|'frame'
          */
         public readonly string $resource,
         /**
@@ -40,7 +40,7 @@ final class SuccessEnvelope implements Model
             data: $data['data'] ?? null,
             meta: Wire::nullableObject($data['meta'] ?? null, "{$path}.meta", ResponseMeta::class),
             platform: Wire::enum($data['platform'] ?? null, "{$path}.platform", ['instagram', 'tiktok', 'twitter', 'reddit', 'youtube']),
-            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'story', 'highlight', 'subreddit', 'rule', 'wiki', 'trophy', 'playlist', 'transcript', 'product', 'chart', 'files']),
+            resource: Wire::enum($data['resource'] ?? null, "{$path}.resource", ['profile', 'post', 'comment', 'hashtag', 'location', 'music', 'category', 'list', 'entity', 'story', 'highlight', 'subreddit', 'rule', 'wiki', 'trophy', 'playlist', 'transcript', 'product', 'chart', 'files', 'storyboard', 'frame']),
             source: Wire::enum($data['source'] ?? null, "{$path}.source", ['live', 'cache']),
         );
     }

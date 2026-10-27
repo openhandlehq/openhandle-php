@@ -18,9 +18,13 @@ final class YouTubePostResource
 
     public readonly YouTubePostFilesResource $files;
 
+    public readonly YouTubePostFrameResource $frame;
+
     public readonly YouTubePostRelatedResource $related;
 
     public readonly YouTubePostSoundPostsResource $soundPosts;
+
+    public readonly YouTubePostStoryboardResource $storyboard;
 
     public readonly YouTubePostTranscriptResource $transcript;
 
@@ -35,8 +39,10 @@ final class YouTubePostResource
     ) {
         $this->comments = new YouTubePostCommentsResource($transport, $bindings);
         $this->files = new YouTubePostFilesResource($transport, $bindings);
+        $this->frame = new YouTubePostFrameResource($transport, $bindings);
         $this->related = new YouTubePostRelatedResource($transport, $bindings);
         $this->soundPosts = new YouTubePostSoundPostsResource($transport, $bindings);
+        $this->storyboard = new YouTubePostStoryboardResource($transport, $bindings);
         $this->transcript = new YouTubePostTranscriptResource($transport, $bindings);
     }
 

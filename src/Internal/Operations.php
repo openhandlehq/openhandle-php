@@ -970,6 +970,14 @@ final class Operations
             'scope' => [['name' => 'youtube'], ['name' => 'post', 'parameter' => 'identifier', 'reference' => 'post'], ['name' => 'files']],
         ],
         [
+            'apiPath' => '/v1/youtube/posts/{identifier}/frame',
+            'method' => 'get',
+            'operation' => 'get',
+            'paginated' => false,
+            'path' => 'youtube.post.frame.get',
+            'scope' => [['name' => 'youtube'], ['name' => 'post', 'parameter' => 'identifier', 'reference' => 'post'], ['name' => 'frame']],
+        ],
+        [
             'apiPath' => '/v1/youtube/posts/{identifier}',
             'method' => 'get',
             'operation' => 'get',
@@ -992,6 +1000,14 @@ final class Operations
             'paginated' => true,
             'path' => 'youtube.post.soundPosts.list',
             'scope' => [['name' => 'youtube'], ['name' => 'post', 'parameter' => 'identifier', 'reference' => 'post'], ['name' => 'soundPosts']],
+        ],
+        [
+            'apiPath' => '/v1/youtube/posts/{identifier}/storyboard',
+            'method' => 'get',
+            'operation' => 'get',
+            'paginated' => false,
+            'path' => 'youtube.post.storyboard.get',
+            'scope' => [['name' => 'youtube'], ['name' => 'post', 'parameter' => 'identifier', 'reference' => 'post'], ['name' => 'storyboard']],
         ],
         [
             'apiPath' => '/v1/youtube/posts/{identifier}/transcript',

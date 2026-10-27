@@ -11,8 +11,10 @@ use OpenHandle\Models\InstagramHighlight;
 use OpenHandle\Models\InstagramProfile;
 use OpenHandle\Models\InstagramStory;
 use OpenHandle\Models\YouTubeFiles;
+use OpenHandle\Models\YouTubeFrame;
 use OpenHandle\Models\YouTubePost;
 use OpenHandle\Models\YouTubeProfile;
+use OpenHandle\Models\YouTubeStoryboard;
 use OpenHandle\OpenHandle;
 use OpenHandle\OpenHandleError;
 use OpenHandle\OpenHandleReferenceError;
@@ -305,6 +307,49 @@ final class ClientTest extends TestCase
         self::assertInstanceOf(YouTubeFiles::class, $files);
         self::assertSame(140, $files->renditions[0]->itag);
         self::assertSame(3449447, $files->renditions[0]->size);
+    }
+
+    public function testYouTubePostStoryboardDecodesSheetsAndFramePositions(): void
+    {
+        $api = new MockApi(static fn(): ResponseInterface => MockApi::envelope([
+            'platform' => 'youtube',
+            'resource' => 'storyboard',
+            'capturedAt' => '2026-10-27T08:00:00Z',
+            'source' => 'live',
+            'data' => [
+                'postId' => 'dQw4w9WgXcQ', 'intervalMs' => 2000, 'frameWidth' => 160, 'frameHeight' => 90,
+                'columns' => 5, 'rows' => 5, 'frameCount' => 2,
+                'sheets' => [['index' => 0, 'url' => 'https://media.openhandle.dev/s', 'width' => 800, 'height' => 90, 'startMs' => 0, 'frameCount' => 2]],
+                'frames' => [['timeMs' => 0, 'sheet' => 0, 'x' => 0, 'y' => 0], ['timeMs' => 2000, 'sheet' => 0, 'x' => 160, 'y' => 0]],
+            ],
+        ]));
+
+        $storyboard = $api->client()->youtube->post('dQw4w9WgXcQ')->storyboard->get()->data;
+
+        self::assertSame('/v1/youtube/posts/dQw4w9WgXcQ/storyboard', $api->requests[0]->getUri()->getPath());
+        self::assertInstanceOf(YouTubeStoryboard::class, $storyboard);
+        self::assertSame(160, $storyboard->frames[1]->x);
+    }
+
+    public function testYouTubePostFrameSendsTheMomentInSeconds(): void
+    {
+        $api = new MockApi(static fn(): ResponseInterface => MockApi::envelope([
+            'platform' => 'youtube',
+            'resource' => 'frame',
+            'capturedAt' => '2026-10-27T08:00:00Z',
+            'source' => 'live',
+            'data' => [
+                'postId' => 'dQw4w9WgXcQ', 'at' => 43,
+                'renditions' => [['quality' => '1080p', 'height' => 1080, 'url' => 'https://media.openhandle.dev/f']],
+            ],
+        ]));
+
+        $frame = $api->client()->youtube->post('dQw4w9WgXcQ')->frame->get(43)->data;
+
+        self::assertSame('/v1/youtube/posts/dQw4w9WgXcQ/frame', $api->requests[0]->getUri()->getPath());
+        self::assertSame('at=43', $api->requests[0]->getUri()->getQuery());
+        self::assertInstanceOf(YouTubeFrame::class, $frame);
+        self::assertSame('1080p', $frame->renditions[0]->quality);
     }
 
     public function testYouTubeProfileSelectorRejectsAVideoUrlBeforeMakingARequest(): void
