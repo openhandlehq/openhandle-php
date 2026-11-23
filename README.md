@@ -159,6 +159,48 @@ Locally invalid references throw `OpenHandleReferenceError` before any request
 is made. `ReferenceMismatchError` reports a social URL that belongs to a
 different platform or resource than the selector.
 
+## Verify webhooks
+
+OpenHandle signs every webhook it pushes to your endpoint. Pass the raw request
+body, the request headers, and the endpoint's signing secret to
+`Webhook::verify()`. It needs no API key, performs no I/O, and returns a typed
+`WebhookEvent`:
+
+```php
+use OpenHandle\Webhook;
+use OpenHandle\WebhookVerificationError;
+
+try {
+    $event = Webhook::verify(
+        rawBody: (string) file_get_contents('php://input'),
+        headers: getallheaders(),
+        secret: (string) getenv('OPENHANDLE_WEBHOOK_SECRET'),
+    );
+} catch (WebhookVerificationError $error) {
+    http_response_code(400);
+    echo $error->code;
+
+    return;
+}
+
+if ($event->environment === 'test') {
+    return; // Skip test events in production.
+}
+
+if ($event->type === 'profile.blocked') {
+    echo $event->data->platform, ' ', $event->data->handle, PHP_EOL;
+}
+```
+
+Read the body exactly as received. Never decode and encode it first, because
+the signature covers the original bytes. Header names match case-insensitively,
+so framework header arrays such as PSR-7 `$request->getHeaders()` work too.
+
+The timestamp must be within 300 seconds of the current time. Pass
+`toleranceSeconds` to change the window. Branch on `$error->code`, which is one
+of `missing_signature`, `missing_timestamp`, `invalid_timestamp`,
+`timestamp_out_of_tolerance`, `invalid_signature`, or `invalid_payload`.
+
 ## License
 
 [MIT](./LICENSE)
