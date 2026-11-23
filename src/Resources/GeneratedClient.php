@@ -38,6 +38,8 @@ abstract class GeneratedClient
 
     public readonly TwitterResource $twitter;
 
+    public readonly WebhookEventsResource $webhookEvents;
+
     public readonly YouTubeResource $youtube;
 
     public function __construct(private readonly Transport $transport)
@@ -47,6 +49,7 @@ abstract class GeneratedClient
         $this->testData = new TestDataResource($transport, []);
         $this->tiktok = new TikTokResource($transport, []);
         $this->twitter = new TwitterResource($transport, []);
+        $this->webhookEvents = new WebhookEventsResource($transport, []);
         $this->youtube = new YouTubeResource($transport, []);
     }
 
